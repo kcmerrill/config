@@ -17,3 +17,5 @@ echo $app_config['db']['user_name'] . ' is my db username configuration!';
 echo $app_config->c('whatever.you.set') . ' is my configuration!';
 echo $app_config->c('php.hello.world') . ' is my configuration!';
 ```
+
+[![Build Status](https://travis-ci.org/kcmerrill/config.png?branch=master)](https://travis-ci.org/kcmerrill/config)
