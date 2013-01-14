@@ -11,7 +11,5 @@ $app_config['sys.app_started'] = microtime();
 $app_config->c('sys.app_lang', 'en');
 $app_config->c('sys.app_timezone', 'Americas/Denver');
 
-
-
 echo 'My application name is: ' . $app_config['sys.app_name'] . PHP_EOL . "\n";
 echo 'My application name is: ' . $app_config->c('sys.app_name') . PHP_EOL . "\n";
