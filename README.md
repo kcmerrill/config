@@ -15,5 +15,5 @@ $app_config = new kcmerrill\utility\config(__DIR__ . '/config/');
 $app_config->set('php.hello.world', 'hello_world!');
 echo $app_config['db']['user_name'] . ' is my db username configuration!';
 echo $app_config->c('whatever.you.set') . ' is my configuration!';
-echo $app_config->c('php.hello.world') . is my configuration!';
+echo $app_config->c('php.hello.world') . ' is my configuration!';
 ```
