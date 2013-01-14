@@ -1,0 +1,16 @@
+{
+    "name": "kcmerrill/config",
+    "description": "A simple yet effective configuration class",
+    "authors": [
+        {
+            "name": "kc merrill",
+            "email": "kcmerrill@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-0": {"kcmerrill": "src/"}
+    }
+}
