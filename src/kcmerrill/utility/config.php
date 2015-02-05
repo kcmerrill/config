@@ -29,20 +29,23 @@
 */
 
 namespace kcmerrill\utility;
+use Symfony\Component\Yaml\Yaml;
 
 class config implements \arrayaccess
 {
     public $autoload_dir = false;
     public $autoloaded_files = array();
     public $config = array();
+    protected $yaml = false;
 
     /**
      * __construct() give it a string and it'll auto load any *.config file
      *
      * @param string $autoload_dir | A folder to autoload directories
      */
-    public function __construct($autoload_dir = false)
+    public function __construct($autoload_dir = false, $yaml = false)
     {
+        $this->yaml = $yaml;
         $this->autoLoadDirectory($autoload_dir);
     }
 
@@ -80,7 +83,16 @@ class config implements \arrayaccess
             return false;
         }
 
-        $config = parse_ini_file($config_file, true);
+        $config = array();
+        if($this->yaml) {
+            try {
+                $config = Yaml::parse(file_get_contents($config_file));
+            } catch (\Exception $e) {
+                $config = array();
+            }
+        } else {
+            $config = parse_ini_file($config_file, true);
+        }
         if (is_array($config)) {
             $this->set(basename(str_replace('.config', '', $config_file)) , $config);
 
@@ -166,17 +178,16 @@ class config implements \arrayaccess
     {
         $this->set($offset, $value);
     }
-    
+
     public function offsetExists($offset)
     {
         return isset($this->config[$offset]);
     }
-    
+
     public function offsetUnset($offset) {}
-    
+
     public function offsetGet($offset)
     {
         return $this->get($offset);
     }
-
 }
