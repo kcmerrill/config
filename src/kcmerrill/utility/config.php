@@ -30,6 +30,7 @@
 
 namespace kcmerrill\utility;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Dumper;
 
 class config implements \arrayaccess
 {
@@ -169,6 +170,26 @@ class config implements \arrayaccess
         }
 
         return $path;
+    }
+
+    /**
+     * save
+     *
+     * Save the contents to a yaml file
+     *
+     * @param  string $config_name    | the configuration to save. By default, all
+     * @param  string $filename       | where to save the configuration
+     * @return boolean  $result
+     */
+    public function save($config_name, $file)
+    {
+        if(!isset($this[$config_name])) {
+            throw new \Exception('Unable to find the configuration for ' . $config_name);
+        }
+
+        $c = $this->c($config_name);
+        $yaml = Yaml::Dump($c, 10);
+        return file_put_contents($file, $yaml) ? true : false;
     }
 
     /**
