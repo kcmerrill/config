@@ -51,6 +51,17 @@ class config implements \arrayaccess
     }
 
     /**
+     * isYaml()
+     *
+     * Determins if the configuration file to be used when loading/saving are yaml
+     *
+     * @param bool $yaml | value to determin if it's yaml or not
+     */
+    public function isYaml($yaml = true) {
+        $this->yaml = $yaml;
+    }
+
+    /**
      * AutoLoad a Directory based on a string
      * Look for all the *.config files(basically a .ini) file.
      *
@@ -78,7 +89,7 @@ class config implements \arrayaccess
      * @param  string  $config_file
      * @return boolean $file_was_loaded
      */
-    public function loadConfigFile($config_file)
+    public function loadConfigFile($config_file, $override_config = false)
     {
         if (!is_string($config_file) && !file_exists($config_file)) {
             return false;
@@ -95,7 +106,11 @@ class config implements \arrayaccess
             $config = parse_ini_file($config_file, true);
         }
         if (is_array($config)) {
-            $this->set(basename(str_replace('.config', '', $config_file)) , $config);
+            if($override_config) {
+                $this->set($override_config, $config);
+            } else {
+                $this->set(basename(str_replace('.config', '', $config_file)) , $config);
+            }
 
             return true;
         }
@@ -183,10 +198,6 @@ class config implements \arrayaccess
      */
     public function save($config_name, $file)
     {
-        if(!isset($this[$config_name])) {
-            throw new \Exception('Unable to find the configuration for ' . $config_name);
-        }
-
         $c = $this->c($config_name);
         $yaml = Yaml::Dump($c, 10);
         return file_put_contents($file, $yaml) ? true : false;
