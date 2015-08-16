@@ -91,7 +91,7 @@ class config implements \arrayaccess
      */
     public function loadConfigFile($config_file, $override_config = false)
     {
-        if (!is_string($config_file) && !file_exists($config_file)) {
+        if (!is_string($config_file) || !file_exists($config_file)) {
             return false;
         }
 
