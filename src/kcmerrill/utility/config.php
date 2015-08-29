@@ -62,6 +62,32 @@ class config implements \arrayaccess
     }
 
     /**
+    * Autoload a directory based on a string.
+    *
+    * @param  string $autoload_prefix
+    * @return bool   $success
+    */
+    public function autoLoadEnv($autoload_prefix) {
+        $autoload_prefix = trim($autoload_prefix, '_');
+        if(count($_ENV)) {
+            foreach($_ENV as $key=>$value) {
+                if(strpos($key, $autoload_prefix) === 0) {
+                    if(is_numeric($value)) {
+                        $value = (int) $value;
+                    } elseif($value == 'false') {
+                        $value = false;
+                    } else if ($value == 'true') {
+                        $value = true;
+                    }
+                    $this->set(str_replace('_', '.', $key), $value);
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * AutoLoad a Directory based on a string
      * Look for all the *.config files(basically a .ini) file.
      *
